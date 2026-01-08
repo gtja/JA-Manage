@@ -702,3 +702,39 @@ create table gen_table_column (
   update_time       datetime                                   comment '更新时间',
   primary key (column_id)
 ) engine=innodb auto_increment=1 comment = '代码生成业务表字段';
+-- ----------------------------
+-- 版本发布预告相关表
+-- ----------------------------
+drop table if exists version_impact_scope;
+create table version_impact_scope (
+  scope_id          bigint(20)      not null auto_increment    comment '影响范围ID',
+  scope_name        varchar(255)    not null                   comment '影响范围名称',
+  scope_description varchar(500)    default null               comment '影响范围描述',
+  create_by         varchar(64)     default ''                 comment '创建者',
+  create_time       datetime                                   comment '创建时间',
+  update_by         varchar(64)     default ''                 comment '更新者',
+  update_time       datetime                                   comment '更新时间',
+  remark            varchar(500)    default null               comment '备注',
+  primary key (scope_id)
+) engine=innodb comment = '影响范围表';
+
+drop table if exists version_release;
+create table version_release (
+  release_id        bigint(20)      not null auto_increment    comment '发布预告ID',
+  release_product   varchar(255)    not null                   comment '发布产品',
+  release_application varchar(255)  not null                   comment '发布应用',
+  release_content   text                                       comment '发布内容',
+  impact_scope_id   bigint(20)                                 comment '影响范围ID',
+  code_branch       varchar(255)    default null               comment '代码分支',
+  release_time      datetime                                   comment '发布时间',
+  release_version   varchar(128)    default null               comment '发布版本',
+  release_service   varchar(255)    default null               comment '发布服务',
+  release_user      varchar(128)    default null               comment '发布人',
+  create_by         varchar(64)     default ''                 comment '创建者',
+  create_time       datetime                                   comment '创建时间',
+  update_by         varchar(64)     default ''                 comment '更新者',
+  update_time       datetime                                   comment '更新时间',
+  remark            varchar(500)    default null               comment '备注',
+  primary key (release_id),
+  key idx_version_release_scope (impact_scope_id)
+) engine=innodb comment = '发布预告表';
