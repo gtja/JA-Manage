@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/ry-vue?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://47.111.155.82:31306/manage_platform?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
-                password: password
+                password: jingansi110
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -35,27 +35,27 @@ spring:
             # 配置一个连接在池中最大生存的时间，单位是毫秒
             maxEvictableIdleTimeMillis: 900000
             # 配置检测连接是否有效
-            validationQuery: SELECT 1 FROM DUAL
-            testWhileIdle: true
-            testOnBorrow: false
-            testOnReturn: false
-            webStatFilter: 
-                enabled: true
-            statViewServlet:
-                enabled: true
-                # 设置白名单，不填则允许所有访问
-                allow:
-                url-pattern: /druid/*
-                # 控制台管理用户名和密码
-                login-username: ruoyi
-                login-password: 123456
-            filter:
-                stat:
-                    enabled: true
-                    # 慢SQL记录
-                    log-slow-sql: true
-                    slow-sql-millis: 1000
-                    merge-sql: true
-                wall:
-                    config:
-                        multi-statement-allow: true
+#            validationQuery: SELECT 1 FROM DUAL
+#            testWhileIdle: true
+#            testOnBorrow: false
+#            testOnReturn: false
+#            webStatFilter:
+#                enabled: true
+#            statViewServlet:
+#                enabled: true
+#                # 设置白名单，不填则允许所有访问
+#                allow:
+#                url-pattern: /druid/*
+#                # 控制台管理用户名和密码
+#                login-username: ruoyi
+#                login-password: 123456
+#            filter:
+#                stat:
+#                    enabled: true
+#                    # 慢SQL记录
+#                    log-slow-sql: true
+#                    slow-sql-millis: 1000
+#                    merge-sql: true
+#                wall:
+#                    config:
+#                        multi-statement-allow: true
