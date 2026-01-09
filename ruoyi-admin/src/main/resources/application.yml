@@ -96,8 +96,10 @@ token:
   secret: abcdefghijklmnopqrstuvwxyz
   # 令牌有效期（默认30分钟）
   expireTime: 30
-
-# MyBatis配置
+dingTalk:
+    # 应用密钥
+    appSecret: SECc9ffcf99b768ca59df07f2a8d10bd47e1346330a8a0293fd77cab30c5570bc02
+    webhookUrl: https://oapi.dingtalk.com/robot/send?access_token=83f9b8f330352c8fb118127c4fcc669ba55117dbc66e8497a1c3a412938d820a
 mybatis-plus:
   # 搜索指定包别名
   typeAliasesPackage: com.ruoyi.**.domain
