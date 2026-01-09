@@ -1,6 +1,10 @@
 package com.ruoyi.version.controller;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.ruoyi.version.service.DingTalkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +29,9 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.version.domain.VersionImpactScopeEntity;
 import com.ruoyi.version.domain.VersionReleaseEntity;
+import com.ruoyi.version.service.IVersionImpactScopeService;
 import com.ruoyi.version.service.IVersionReleaseService;
 
 /**
@@ -40,6 +46,8 @@ public class VersionControl extends BaseController {
     private IVersionReleaseService versionReleaseService;
     @Autowired
     private DingTalkService dingTalkService;
+    @Autowired
+    private IVersionImpactScopeService impactScopeService;
 
     /**
      * 分页查询发布预告列表
@@ -72,7 +80,20 @@ public class VersionControl extends BaseController {
             queryWrapper.like("create_by", release.getCreateBy());
         }
         Page<VersionReleaseEntity> result = versionReleaseService.page(page, queryWrapper);
-        TableDataInfo data = new TableDataInfo(result.getRecords(), result.getTotal());
+        List<VersionReleaseEntity> records = result.getRecords();
+        if (!records.isEmpty()) {
+            List<Long> scopeIds = records.stream()
+                .map(VersionReleaseEntity::getImpactScopeId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
+            if (!scopeIds.isEmpty()) {
+                Map<Long, String> scopeNameById = impactScopeService.listByIds(scopeIds).stream()
+                    .collect(Collectors.toMap(VersionImpactScopeEntity::getScopeId, VersionImpactScopeEntity::getScopeName));
+                records.forEach(item -> item.setImpactScopeName(scopeNameById.get(item.getImpactScopeId())));
+            }
+        }
+        TableDataInfo data = new TableDataInfo(records, result.getTotal());
         data.setCode(HttpStatus.SUCCESS);
         data.setMsg("查询成功");
         return data;
